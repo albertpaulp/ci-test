@@ -1,0 +1,33 @@
+name: Merge PR on "shipit" Comment
+
+on:
+  issue_comment:
+    types:
+      - created
+
+jobs:
+  merge-on-shipit:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Install jq
+        run: sudo apt-get install jq
+
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Check Comment and Merge
+        run: |
+          COMMENT=$(jq -r .comment.body $GITHUB_EVENT_PATH)
+          
+          if [[ "$COMMENT" == "/shipit" ]]; then
+            PR_NUMBER=$(jq -r .issue.number $GITHUB_EVENT_PATH)
+            echo "Merging PR #$PR_NUMBER"
+            
+            # Use GitHub CLI or API to merge the PR
+            # For GitHub CLI:
+            gh pr merge --number $PR_NUMBER
+          else
+            echo "No action needed. Comment is not 'shipit'."
+          fi
