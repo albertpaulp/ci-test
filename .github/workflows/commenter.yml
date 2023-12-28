@@ -5,12 +5,13 @@ on:
     types:
       - created
 
+env:
+  GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
 jobs:
   merge-on-shipit:
     runs-on: ubuntu-latest
-
     steps:
-
       - name: Install jq
         run: sudo apt-get install jq
 
@@ -27,7 +28,7 @@ jobs:
             
             # Use GitHub CLI or API to merge the PR
             # For GitHub CLI:
-            gh pr merge --number $PR_NUMBER
+            gh pr merge $PR_NUMBER --squash
           else
             echo "No action needed. Comment is not 'shipit'."
           fi
