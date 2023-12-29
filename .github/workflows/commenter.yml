@@ -25,9 +25,7 @@ jobs:
           if [[ "$COMMENT" == "/shipit" ]]; then
             PR_NUMBER=$(jq -r .issue.number $GITHUB_EVENT_PATH)
             echo "Merging PR #$PR_NUMBER"
-            
-            # Use GitHub CLI or API to merge the PR
-            # For GitHub CLI:
+          
             gh pr merge $PR_NUMBER --squash
           else
             echo "No action needed. Comment is not 'shipit'."
