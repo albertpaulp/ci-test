@@ -1,4 +1,4 @@
-name: Merge PR on "shipit" Comment
+name: Merge PR on "/shipit" Comment
 
 on:
   issue_comment:
@@ -7,6 +7,10 @@ on:
 
 env:
   GH_TOKEN: ${{ secrets.GH_TOKEN }}
+  GITHUB_BRANCH: ${{ github.head_ref || github.ref_name }}
+  HEAD: ${{ github.head_ref }}
+  BASE: ${{ github.base_ref }}
+
 
 jobs:
   merge-on-shipit:
@@ -24,11 +28,14 @@ jobs:
           
           if [[ "$COMMENT" == "/shipit" ]]; then
             PR_NUMBER=$(jq -r .issue.number $GITHUB_EVENT_PATH)
+            TICKET_ID=$(echo $GITHUB_BRANCH | awk -F'/' '{print $2}')
             echo "Merging PR #$PR_NUMBER"
             
-            # Use GitHub CLI or API to merge the PR
-            # For GitHub CLI:
-            gh pr merge $PR_NUMBER --squash
+            # gh pr merge $PR_NUMBER --squash
+            
+            echo "GITHUB_BRANCH => $GITHUB_BRANCH, TICKET_ID=$TICKET_ID"
+            echo "HEAD => ${{ github.head_ref }}, BASE=${{ github.base_ref }}
+            curl -H $JIRA_AUTH -H "Content-Type: application/json" --data '{"transition": {"id": "21"}}' "https://accredible.atlassian.net/rest/api/3/issue/$TICKET_ID/transitions"
           else
-            echo "No action needed. Comment is not 'shipit'."
+            echo "No action needed. Comment is not '/shipit'."
           fi
