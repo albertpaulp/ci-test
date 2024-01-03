@@ -13,3 +13,5 @@ Automate merging by typing `/shipit` on PRs.
 ## Good to have features
 
 - `/shipit` on release PRs could merge the PR using "merge commit" and trigger production deployment through Github Actions.
+
+- Praying to demogod it works!
