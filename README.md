@@ -10,6 +10,6 @@ Automate merging by typing `/shipit` on PRs.
 - Branch name should include Jira ticket id in following format, xxxx/\<ticket-id\>/xxxxx.
 - Repository should have `GH_TOKEN` and `JIRA_AUTH` tokens set.
 
-## Feature requests
+## Good to have features
 
 - `/shipit` on release PRs could merge the PR using "merge commit" and trigger production deployment through Github Actions.
